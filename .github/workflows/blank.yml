@@ -1,0 +1,19 @@
+name: GitGoogleContainer
+on:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/checkout@v2
+      - name: Login in Docker Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_IO_TOKEN }}
+      - name: Docker pull and push
+        run: |
+          docker pull nvidia/cuda:11.2.1-base-ubuntu18.04  
+          docker tag  nvidia/cuda:11.2.1-base-ubuntu18.04  ghcr.io/isqiao/nvidia/cuda:11.2.1-base-ubuntu18.04      
+          docker push ghcr.io/isqiao/nvidia/cuda:11.2.1-base-ubuntu18.04
